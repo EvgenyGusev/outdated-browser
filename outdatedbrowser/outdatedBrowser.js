@@ -7,22 +7,15 @@ website:    http://www.burocratik.com
 -----------------------------------------------------------------------*/
 var outdatedBrowser = function(options) {
 
-    //Variable definition
     var outdated = document.getElementById("outdated");
-    var btnClose = document.getElementById("btnCloseUpdateBrowser");
-    var btnUpdate = document.getElementById("btnUpdateBrowser");
-
+    outdated.style.display = 'none'
+    
     // Default settings
     this.defaultOpts = {
-        bgColor: '#F25648',
-        color: '#ffffff',
         lowerThan: 'transform'
     }
 
     if (options) {
-        this.defaultOpts.bgColor = options.bgColor,
-        this.defaultOpts.color = options.color;
-
         //assign css3 property to IE browser version
         if(options.lowerThan == 'IE8' || options.lowerThan == 'borderSpacing') {
             options.lowerThan = 'borderSpacing';
@@ -35,47 +28,10 @@ var outdatedBrowser = function(options) {
         }
 
         this.defaultOpts.lowerThan = options.lowerThan;
-
-        bkgColor = this.defaultOpts.bgColor;
-        txtColor = this.defaultOpts.color;
-        cssProp = this.defaultOpts.lowerThan;
-    } else {
-        bkgColor = this.defaultOpts.bgColor;
-        txtColor = this.defaultOpts.color;
-        cssProp = this.defaultOpts.lowerThan;
-    }
-
-    //Define opacity and fadeIn/fadeOut functions
-    var done = true;
-
-    function function_opacity(opacity_value) {
-        outdated.style.opacity = opacity_value / 100;
-        outdated.style.filter = 'alpha(opacity=' + opacity_value + ')';
-    }
-
-    function function_fade_out(opacity_value) {
-        function_opacity(opacity_value);
-        if (opacity_value == 1) {
-            outdated.style.display = 'none';
-            done = true;
-        }
-    }
-
-    function function_fade_in(opacity_value) {
-        function_opacity(opacity_value);
-        if (opacity_value == 1) {
-            outdated.style.display = 'block';
-        }
-        if (opacity_value == 100) {
-            done = true;
-        }
-    }
-
-    //check if element has a particular class
-    function hasClass(element, cls) {
-        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
-    }
-
+    }  
+    
+    var cssProp = this.defaultOpts.lowerThan;
+      
     var supports = (function() {
        var div = document.createElement('div'),
           vendors = 'Khtml Ms O Moz Webkit'.split(' '),
@@ -99,43 +55,6 @@ var outdatedBrowser = function(options) {
 
     //check for css3 property support (transform=default)
     if ( !supports(''+ cssProp +'') ) {
-        if (done && outdated.style.opacity !== '1') {
-            done = false;
-            for (var i = 1; i <= 100; i++) {
-                setTimeout((function (x) {
-                    return function () {
-                        function_fade_in(x)
-                    };
-                })(i), i * 10);
-            }
-        }
-        //close button
-        btnClose.onmousedown = function() {
-            outdated.style.display = 'none';
-            return false;
-        };
+      outdated.style.display = 'block';
     }
-
-
-    //check settings attributes
-    outdated.style.backgroundColor = bkgColor;
-    //why to har to put !important on IE6
-    outdated.style.color = txtColor;
-    outdated.children[0].style.color = txtColor;
-    outdated.children[1].style.color = txtColor;
-
-    //check settings attributes
-    btnUpdate.style.color = txtColor;
-    btnUpdate.style.borderColor = txtColor;
-    btnClose.style.color = txtColor;
-
-    //Override the update button color to match the background color
-    btnUpdate.onmouseover = function() {
-        this.style.color = bkgColor;
-        this.style.backgroundColor = txtColor;
-    };
-    btnUpdate.onmouseout = function() {
-        this.style.color = txtColor;
-        this.style.backgroundColor = bkgColor;
-    };
 }//end of function
